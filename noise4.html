@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Noise</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<style>
+body{
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script type="text/javascript">
+var canvas = document.getElementById('canvas');
+var mycanvas = document.createElement('canvas');
+var buf = [];
+var bnum = 7;
+var size = 256;
+
+function expandCanvas(){
+  canvas.width = document.documentElement.clientWidth;
+  canvas.height = document.documentElement.clientHeight;
+}
+
+function makebuf(){
+  for (var i=0;i<bnum;i++){
+    var c = document.createElement('canvas');
+    c.width = size;
+    c.height = size;
+    for (var x=0;x<size;x++){
+      for (var y=0;y<size;y++){
+        var cc = c.getContext('2d');
+        var n = Math.floor(Math.random()*255);
+        cc.fillStyle='rgb('+n+','+n+','+n+')'
+        cc.fillRect(x,y,1,1);
+      }
+    }
+    buf.push(c);
+  }
+}
+
+var s = 0;
+
+function draw(){
+  w = canvas.width;
+  h = canvas.height;
+  mycanvas.width = w;
+  mycanvas.height = h;
+  var iw = w/size + 1;
+  var ih = h/size + 1;
+  for (var x=0;x<iw;x++){
+    for (var y=0;y<ih;y++){
+      var cc = canvas.getContext('2d');
+      s = (s+1)%bnum;
+      cc.drawImage(buf[s],x*size,y*size);
+    }
+  }
+  var context = canvas.getContext('2d');
+  context.drawImage(mycanvas,0,0);
+}
+
+window.onresize = expandCanvas;
+onload = function(){
+  expandCanvas();
+  makebuf();
+  setInterval(draw,10);
+}
+</script>
+</body>
+</html>

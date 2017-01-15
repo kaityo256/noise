@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Noise</title>
+<meta charset="UTF-8">
+<meta http-equiv="Content-Script-Type" content="text/javascript" />
+<style>
+body{
+  margin: 0px;
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+}
+</style>
+</head>
+<body>
+<canvas id="canvas"></canvas>
+<script type="text/javascript">
+var canvas = document.getElementById('canvas');
+
+function expandCanvas(){
+  canvas.width = document.documentElement.clientWidth;
+  canvas.height = document.documentElement.clientHeight;
+}
+
+function draw() {
+  w = canvas.width;
+  h = canvas.height;
+  s = 2;
+  var wi = w/s;
+  var hi = h/s;
+  var cc = canvas.getContext('2d');
+  for (var x = 0;x <wi;x++){
+    for (var y = 0;y <hi;y++){
+      var n = Math.floor(Math.random()*255);
+      cc.fillStyle='rgb('+n+','+n+','+n+')'
+      cc.fillRect(x*s,y*s,s,s);
+    }
+  }
+}
+
+window.onresize = expandCanvas;
+onload = function(){
+  expandCanvas();
+  setInterval(draw,10);
+}
+</script>
+</body>
+</html>
