@@ -51,9 +51,9 @@ function draw(){
   mycanvas.height = h;
   var iw = w/size + 1;
   var ih = h/size + 1;
+  var cc = canvas.getContext('2d');
   for (var x=0;x<iw;x++){
     for (var y=0;y<ih;y++){
-      var cc = canvas.getContext('2d');
       var s = Math.floor(Math.random()*bnum);
       cc.drawImage(buf[s],x*size,y*size);
     }
